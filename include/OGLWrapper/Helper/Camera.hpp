@@ -4,49 +4,23 @@
 
 #pragma once
 
-#include <type_traits>
+#include <glm/ext/vector_float3.hpp>
+#include <glm/ext/matrix_float4x4.hpp>
 
-#include <glm/gtc/matrix_transform.hpp>
-
-#include "PerspectiveProjection.hpp"
-#include "OrthographicProjection.hpp"
-
-namespace OGLWrapper::Helper{
-    namespace details {
-        template <typename T, typename... Ts>
-        concept one_of = std::disjunction_v<std::is_same<T, Ts>...>;
+namespace OGLWrapper::Helper::Camera{
+    static glm::vec3 getPosition(const glm::mat4 &view) noexcept {
+        return view[3];
     }
 
-    template <details::one_of<PerspectiveProjection, OrthographicProjection> Projection>
-    struct Camera{
-        static constexpr glm::vec3 world_up { 0.f, 1.f, 0.f };
+    static glm::vec3 getFront(const glm::mat4 &view) noexcept {
+        return -view[2];
+    }
 
-        glm::vec3 position;
-        glm::vec3 target;
-        Projection projection;
+    static glm::vec3 getRight(const glm::mat4 &view) noexcept {
+        return view[0];
+    }
 
-        constexpr glm::mat4 getViewMatrix() const noexcept {
-            return lookAt(position, target, world_up);
-        }
-
-        constexpr glm::vec3 getTargetDisplacement() const noexcept {
-            return target - position;
-        }
-
-        constexpr float getTargetDistance() const noexcept {
-            return length(getTargetDisplacement());
-        }
-
-        constexpr glm::vec3 getFront() const noexcept {
-            return normalize(getTargetDisplacement());
-        }
-
-        constexpr glm::vec3 getRight() const noexcept {
-            return normalize(cross(getFront(), world_up));
-        }
-
-        constexpr glm::vec3 getUp() const noexcept {
-            return normalize(cross(getRight(), getFront()));
-        }
-    };
+    static glm::vec3 getUp(const glm::mat4 &view) noexcept {
+        return view[1];
+    }
 }

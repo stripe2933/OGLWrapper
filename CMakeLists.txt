@@ -11,9 +11,6 @@ add_library(OGLWrapper
     src/Texture.cpp
     src/Program.cpp
     src/Helper/Image.cpp
-    src/Helper/Camera.cpp
-    src/Helper/PerspectiveProjection.cpp
-    src/Helper/OrthographicProjection.cpp
     src/GLFW/GlfwWindow.cpp
 )
 target_compile_features(OGLWrapper PUBLIC cxx_std_20)
