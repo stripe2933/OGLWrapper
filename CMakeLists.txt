@@ -26,7 +26,7 @@ target_include_directories(OGLWrapper
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 target_link_libraries(OGLWrapper PUBLIC
-        OpenGL::GL
-        unofficial::gl3w::gl3w
-        glfw glm::glm
+    OpenGL::GL
+    unofficial::gl3w::gl3w
+    glfw glm::glm
 )
