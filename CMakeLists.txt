@@ -6,6 +6,7 @@ project(OGLWrapper
 )
 
 add_library(OGLWrapper
+    src/OpenGLContext.cpp
     src/Shader.cpp
     src/Texture.cpp
     src/Program.cpp
