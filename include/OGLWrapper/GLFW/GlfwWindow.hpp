@@ -23,6 +23,9 @@ protected:
 
     virtual void onRenderLoop(float time_delta) = 0;
 
+    virtual void onSizeCallback(glm::ivec2 size) { }
+    virtual void onFramebufferSizeCallback(glm::ivec2 size) { }
+    virtual void onContentScaleCallback(glm::vec2 scale) { }
     virtual void onKeyCallback(int key, int scancode, int action, int mods) { }
     virtual void onCharCallback(unsigned int codepoint) { }
     virtual void onCursorPosCallback(glm::dvec2 position) { }

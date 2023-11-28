@@ -28,6 +28,18 @@ GlfwWindow::GlfwWindow(int width, int height, const char* title, const GlfwWindo
 
     glfwSetWindowUserPointer(base, this);
 
+    glfwSetWindowSizeCallback(base, [](GLFWwindow *window, int width, int height) {
+        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        user_ptr->onSizeCallback({ width, height });
+    });
+    glfwSetFramebufferSizeCallback(base, [](GLFWwindow *window, int width, int height) {
+        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        user_ptr->onFramebufferSizeCallback({ width, height });
+    });
+    glfwSetWindowContentScaleCallback(base, [](GLFWwindow *window, float xscale, float yscale) {
+        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        user_ptr->onContentScaleCallback({ xscale, yscale });
+    });
     glfwSetKeyCallback(base, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
         GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
         user_ptr->onKeyCallback(key, scancode, action, mods);
