@@ -19,7 +19,7 @@ namespace OGLWrapper::Helper{
 
     template <details::one_of<PerspectiveProjection, OrthographicProjection> Projection>
     struct Camera{
-        constexpr glm::vec3 world_up { 0.f, 1.f, 0.f };
+        static constexpr glm::vec3 world_up { 0.f, 1.f, 0.f };
 
         glm::vec3 position;
         glm::vec3 target;
