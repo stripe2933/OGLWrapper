@@ -42,7 +42,7 @@ namespace OGLWrapper {
 
         GLuint handle;
 
-        template <bool CheckCompileStatus = STRICT_MODE>
+        template <bool CheckCompileStatus = OGLWRAPPER_STRICT_MODE>
         explicit Shader(const std::filesystem::path &source_path)
                 : handle { glCreateShader(static_cast<GLenum>(ShaderT)) }
         {

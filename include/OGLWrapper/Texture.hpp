@@ -37,7 +37,7 @@ namespace OGLWrapper{
         GLenum target;
         GLuint handle;
 
-        template <bool CheckFormat = STRICT_MODE>
+        template <bool CheckFormat = OGLWRAPPER_STRICT_MODE>
         Texture(GLenum target, GLint internal_format, GLsizei width, GLsizei height, GLenum format, GLenum type,
                 const void *data, const TextureParamter &parameter, bool generate_mipmap = true) : target { target }
         {

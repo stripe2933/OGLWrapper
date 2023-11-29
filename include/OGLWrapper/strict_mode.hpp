@@ -5,7 +5,7 @@
 #pragma once
 
 #ifndef NDEBUG
-#define STRICT_MODE 1
+#define OGLWRAPPER_STRICT_MODE 1
 #else
-#define STRICT_MODE 0
+#define OGLWRAPPER_STRICT_MODE 0
 #endif

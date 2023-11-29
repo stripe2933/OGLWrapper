@@ -57,7 +57,7 @@ namespace OGLWrapper{
         std::size_t size;
         std::ptrdiff_t offset;
 
-        template <bool CheckOverflow = STRICT_MODE>
+        template <bool CheckOverflow = OGLWRAPPER_STRICT_MODE>
         explicit SubBuffer(const Buffer<T> &buffer, std::size_t size, std::ptrdiff_t offset)
                 : BufferBase<T> { buffer.target, buffer.usage }, buffer { buffer }, size { size }, offset { offset }
         {

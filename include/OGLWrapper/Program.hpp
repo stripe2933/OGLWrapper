@@ -37,7 +37,7 @@ namespace OGLWrapper {
         GLuint handle;
 
         // TODO: add constraints for Shaders.
-        template <bool CheckLinkStatus = STRICT_MODE, typename... Shaders>
+        template <bool CheckLinkStatus = OGLWRAPPER_STRICT_MODE, typename... Shaders>
         explicit Program(Shaders &&...shaders)
                 : handle { glCreateProgram() }
         {
