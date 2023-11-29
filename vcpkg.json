@@ -5,6 +5,7 @@
     "glfw3",
     "gl3w",
     "glm",
-    "stb"
+    "stb",
+    "eventpp"
   ]
 }

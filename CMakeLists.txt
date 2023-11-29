@@ -11,7 +11,7 @@ add_library(OGLWrapper
     src/Texture.cpp
     src/Program.cpp
     src/Helper/Image.cpp
-    src/GLFW/GlfwWindow.cpp
+    src/GLFW/Window.cpp
 )
 target_compile_features(OGLWrapper PUBLIC cxx_std_20)
 
@@ -20,6 +20,7 @@ find_package(gl3w CONFIG REQUIRED)
 find_package(Stb REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
+find_package(eventpp CONFIG REQUIRED)
 target_include_directories(OGLWrapper
     PRIVATE
         ${Stb_INCLUDE_DIR}
@@ -29,5 +30,7 @@ target_include_directories(OGLWrapper
 target_link_libraries(OGLWrapper PUBLIC
     OpenGL::GL
     unofficial::gl3w::gl3w
-    glfw glm::glm
+    glfw
+    glm::glm
+    eventpp::eventpp
 )

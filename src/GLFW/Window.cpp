@@ -2,18 +2,18 @@
 // Created by gomkyung2 on 11/26/23.
 //
 
-#include <OGLWrapper/GLFW/GlfwWindow.hpp>
+#include <OGLWrapper/GLFW/Window.hpp>
 
 #include <stdexcept>
 
-void GlfwWindowHint::setup() const {
+void OGLWrapper::GLFW::WindowHint::setup() const {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, context_version_major);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, context_version_minor);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, opengl_forward_compat);
     glfwWindowHint(GLFW_OPENGL_PROFILE, opengl_profile);
 }
 
-GlfwWindow::GlfwWindow(int width, int height, const char* title, const GlfwWindowHint& hint) {
+OGLWrapper::GLFW::Window::Window(int width, int height, const char* title, const WindowHint& hint) {
     if (!glfwInit()) {
         throw std::runtime_error { "Failed to initialize GLFW" };
     }
@@ -29,77 +29,97 @@ GlfwWindow::GlfwWindow(int width, int height, const char* title, const GlfwWindo
     glfwSetWindowUserPointer(base, this);
 
     glfwSetWindowSizeCallback(base, [](GLFWwindow *window, int width, int height) {
-        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        base->onSizeCallback({ width, height });
+        Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+        GLFW::GlfwEvent event{};
+        base->size_callback(event, { width, height });
     });
     glfwSetFramebufferSizeCallback(base, [](GLFWwindow *window, int width, int height) {
-        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        base->onFramebufferSizeCallback({ width, height });
+        Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+        GLFW::GlfwEvent event{};
+        base->framebuffer_size_callback(event, { width, height });
     });
     glfwSetWindowContentScaleCallback(base, [](GLFWwindow *window, float xscale, float yscale) {
-        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        base->onContentScaleCallback({ xscale, yscale });
+        Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+        GLFW::GlfwEvent event{};
+        base->content_scale_callback(event, { xscale, yscale });
     });
     glfwSetKeyCallback(base, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
-        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        base->onKeyCallback(key, scancode, action, mods);
+        Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+        GLFW::GlfwEvent event{};
+        base->key_callback(event, key, scancode, action, mods);
     });
     glfwSetCharCallback(base, [](GLFWwindow *window, unsigned int codepoint) {
-        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        base->onCharCallback(codepoint);
+        Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+        GLFW::GlfwEvent event{};
+        base->char_callback(event, codepoint);
     });
     glfwSetCursorPosCallback(base, [](GLFWwindow *window, double xpos, double ypos) {
-        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        base->onCursorPosCallback({ xpos, ypos });
+        Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+        GLFW::GlfwEvent event{};
+        base->cursor_pos_callback(event, { xpos, ypos });
     });
     glfwSetCursorEnterCallback(base, [](GLFWwindow *window, int entered) {
-        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        base->onCursorEnterCallback(entered);
+        Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+        GLFW::GlfwEvent event{};
+        base->cursor_enter_callback(event, entered);
     });
     glfwSetMouseButtonCallback(base, [](GLFWwindow *window, int button, int action, int mods) {
-        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        base->onMouseButtonCallback(button, action, mods);
+        Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+        GLFW::GlfwEvent event{};
+        base->mouse_button_callback(event, button, action, mods);
     });
     glfwSetScrollCallback(base, [](GLFWwindow *window, double xoffset, double yoffset) {
-        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        base->onScrollCallback({ xoffset, yoffset });
+        Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+        GLFW::GlfwEvent event{};
+        base->scroll_callback(event, { xoffset, yoffset });
     });
     glfwSetDropCallback(base, [](GLFWwindow *window, int count, const char **paths) {
-        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        base->onDropCallback(count, paths);
+        Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+        GLFW::GlfwEvent event{};
+        base->drop_callback(event, count, paths);
     });
 }
 
-GlfwWindow::~GlfwWindow() {
+OGLWrapper::GLFW::Window::~Window() {
     glfwDestroyWindow(base);
     glfwTerminate();
 }
 
-glm::ivec2 GlfwWindow::getSize() const {
+glm::ivec2 OGLWrapper::GLFW::Window::getSize() const {
     glm::ivec2 size;
     glfwGetWindowSize(base, &size.x, &size.y);
     return size;
 }
 
-glm::ivec2 GlfwWindow::getFramebufferSize() const {
+glm::ivec2 OGLWrapper::GLFW::Window::getFramebufferSize() const {
     glm::ivec2 size;
     glfwGetFramebufferSize(base, &size.x, &size.y);
     return size;
 }
 
-glm::vec2 GlfwWindow::getContentScale() const {
+glm::vec2 OGLWrapper::GLFW::Window::getContentScale() const {
     glm::vec2 scale;
     glfwGetWindowContentScale(base, &scale.x, &scale.y);
     return scale;
 }
 
-glm::dvec2 GlfwWindow::getCursorPosition() const {
+glm::dvec2 OGLWrapper::GLFW::Window::getCursorPosition() const {
     glm::dvec2 position;
     glfwGetCursorPos(base, &position.x, &position.y);
     return position;
 }
 
-void GlfwWindow::run() {
+void OGLWrapper::GLFW::Window::run() {
     float elapsed_time = 0.f;
     while (!glfwWindowShouldClose(base)) {
         const auto time_delta = static_cast<float>(glfwGetTime()) - elapsed_time;
