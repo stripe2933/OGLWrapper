@@ -18,7 +18,8 @@ namespace OGLWrapper {
 
     enum class ShaderType : GLenum {
         Vertex = GL_VERTEX_SHADER,
-        Fragment = GL_FRAGMENT_SHADER
+        Fragment = GL_FRAGMENT_SHADER,
+        Geometry = GL_GEOMETRY_SHADER,
     };
 
     template <ShaderType ShaderT>
@@ -78,4 +79,8 @@ namespace OGLWrapper {
             }
         }
     };
+
+    using VertexShader = Shader<ShaderType::Vertex>;
+    using FragmentShader = Shader<ShaderType::Fragment>;
+    using GeometryShader = Shader<ShaderType::Geometry>;
 }
