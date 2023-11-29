@@ -5,10 +5,10 @@
 #pragma once
 
 namespace OGLWrapper::GLFW{
-    struct GlfwEvent{
+    struct EventArg{
         struct policy{
-            static bool canContinueInvoking(GlfwEvent &event, auto &&...) noexcept {
-                return !event.canceled;
+            static bool canContinueInvoking(EventArg &arg, auto &&...) noexcept {
+                return !arg.canceled;
             }
         };
 

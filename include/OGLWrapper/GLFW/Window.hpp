@@ -9,7 +9,7 @@
 #include <glm/vec2.hpp>
 #include <eventpp/callbacklist.h>
 
-#include "GlfwEvent.hpp"
+#include "EventArg.hpp"
 
 namespace OGLWrapper::GLFW {
     struct WindowHint {
@@ -25,16 +25,16 @@ namespace OGLWrapper::GLFW {
     protected:
         GLFWwindow *base;
 
-        eventpp::CallbackList<void(GlfwEvent&, glm::ivec2 /* size */), GlfwEvent::policy> size_callback;
-        eventpp::CallbackList<void(GlfwEvent&, glm::ivec2 /* size */), GlfwEvent::policy> framebuffer_size_callback;
-        eventpp::CallbackList<void(GlfwEvent&, glm::vec2 /* scale */), GlfwEvent::policy> content_scale_callback;
-        eventpp::CallbackList<void(GlfwEvent&, int /* key */, int /* scancode */, int /* action */, int /* mods */), GlfwEvent::policy> key_callback;
-        eventpp::CallbackList<void(GlfwEvent&, unsigned int /* codepoint */), GlfwEvent::policy> char_callback;
-        eventpp::CallbackList<void(GlfwEvent&, glm::dvec2 /* position */), GlfwEvent::policy> cursor_pos_callback;
-        eventpp::CallbackList<void(GlfwEvent&, int /* entered */), GlfwEvent::policy> cursor_enter_callback;
-        eventpp::CallbackList<void(GlfwEvent&, int /* button */, int /* action */, int /* mods */), GlfwEvent::policy> mouse_button_callback;
-        eventpp::CallbackList<void(GlfwEvent&, glm::dvec2 /* offset */), GlfwEvent::policy> scroll_callback;
-        eventpp::CallbackList<void(GlfwEvent&, int /* count */, const char ** /* paths */), GlfwEvent::policy> drop_callback;
+        eventpp::CallbackList<void(EventArg&, glm::ivec2 /* size */), EventArg::policy> size_callback;
+        eventpp::CallbackList<void(EventArg&, glm::ivec2 /* size */), EventArg::policy> framebuffer_size_callback;
+        eventpp::CallbackList<void(EventArg&, glm::vec2 /* scale */), EventArg::policy> content_scale_callback;
+        eventpp::CallbackList<void(EventArg&, int /* key */, int /* scancode */, int /* action */, int /* mods */), EventArg::policy> key_callback;
+        eventpp::CallbackList<void(EventArg&, unsigned int /* codepoint */), EventArg::policy> char_callback;
+        eventpp::CallbackList<void(EventArg&, glm::dvec2 /* position */), EventArg::policy> cursor_pos_callback;
+        eventpp::CallbackList<void(EventArg&, int /* entered */), EventArg::policy> cursor_enter_callback;
+        eventpp::CallbackList<void(EventArg&, int /* button */, int /* action */, int /* mods */), EventArg::policy> mouse_button_callback;
+        eventpp::CallbackList<void(EventArg&, glm::dvec2 /* offset */), EventArg::policy> scroll_callback;
+        eventpp::CallbackList<void(EventArg&, int /* count */, const char ** /* paths */), EventArg::policy> drop_callback;
 
         virtual void onRenderLoop(float time_delta) = 0;
 

@@ -31,61 +31,61 @@ OGLWrapper::GLFW::Window::Window(int width, int height, const char* title, const
     glfwSetWindowSizeCallback(base, [](GLFWwindow *window, int width, int height) {
         Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-        GLFW::GlfwEvent event{};
+        GLFW::EventArg event{};
         base->size_callback(event, { width, height });
     });
     glfwSetFramebufferSizeCallback(base, [](GLFWwindow *window, int width, int height) {
         Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-        GLFW::GlfwEvent event{};
+        GLFW::EventArg event{};
         base->framebuffer_size_callback(event, { width, height });
     });
     glfwSetWindowContentScaleCallback(base, [](GLFWwindow *window, float xscale, float yscale) {
         Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-        GLFW::GlfwEvent event{};
+        GLFW::EventArg event{};
         base->content_scale_callback(event, { xscale, yscale });
     });
     glfwSetKeyCallback(base, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
         Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-        GLFW::GlfwEvent event{};
+        GLFW::EventArg event{};
         base->key_callback(event, key, scancode, action, mods);
     });
     glfwSetCharCallback(base, [](GLFWwindow *window, unsigned int codepoint) {
         Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-        GLFW::GlfwEvent event{};
+        GLFW::EventArg event{};
         base->char_callback(event, codepoint);
     });
     glfwSetCursorPosCallback(base, [](GLFWwindow *window, double xpos, double ypos) {
         Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-        GLFW::GlfwEvent event{};
+        GLFW::EventArg event{};
         base->cursor_pos_callback(event, { xpos, ypos });
     });
     glfwSetCursorEnterCallback(base, [](GLFWwindow *window, int entered) {
         Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-        GLFW::GlfwEvent event{};
+        GLFW::EventArg event{};
         base->cursor_enter_callback(event, entered);
     });
     glfwSetMouseButtonCallback(base, [](GLFWwindow *window, int button, int action, int mods) {
         Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-        GLFW::GlfwEvent event{};
+        GLFW::EventArg event{};
         base->mouse_button_callback(event, button, action, mods);
     });
     glfwSetScrollCallback(base, [](GLFWwindow *window, double xoffset, double yoffset) {
         Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-        GLFW::GlfwEvent event{};
+        GLFW::EventArg event{};
         base->scroll_callback(event, { xoffset, yoffset });
     });
     glfwSetDropCallback(base, [](GLFWwindow *window, int count, const char **paths) {
         Window *base = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-        GLFW::GlfwEvent event{};
+        GLFW::EventArg event{};
         base->drop_callback(event, count, paths);
     });
 }
