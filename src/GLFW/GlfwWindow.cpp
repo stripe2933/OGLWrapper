@@ -29,44 +29,44 @@ GlfwWindow::GlfwWindow(int width, int height, const char* title, const GlfwWindo
     glfwSetWindowUserPointer(base, this);
 
     glfwSetWindowSizeCallback(base, [](GLFWwindow *window, int width, int height) {
-        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        user_ptr->onSizeCallback({ width, height });
+        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        base->onSizeCallback({ width, height });
     });
     glfwSetFramebufferSizeCallback(base, [](GLFWwindow *window, int width, int height) {
-        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        user_ptr->onFramebufferSizeCallback({ width, height });
+        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        base->onFramebufferSizeCallback({ width, height });
     });
     glfwSetWindowContentScaleCallback(base, [](GLFWwindow *window, float xscale, float yscale) {
-        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        user_ptr->onContentScaleCallback({ xscale, yscale });
+        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        base->onContentScaleCallback({ xscale, yscale });
     });
     glfwSetKeyCallback(base, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
-        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        user_ptr->onKeyCallback(key, scancode, action, mods);
+        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        base->onKeyCallback(key, scancode, action, mods);
     });
     glfwSetCharCallback(base, [](GLFWwindow *window, unsigned int codepoint) {
-        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        user_ptr->onCharCallback(codepoint);
+        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        base->onCharCallback(codepoint);
     });
     glfwSetCursorPosCallback(base, [](GLFWwindow *window, double xpos, double ypos) {
-        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        user_ptr->onCursorPosCallback({ xpos, ypos });
+        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        base->onCursorPosCallback({ xpos, ypos });
     });
     glfwSetCursorEnterCallback(base, [](GLFWwindow *window, int entered) {
-        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        user_ptr->onCursorEnterCallback(entered);
+        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        base->onCursorEnterCallback(entered);
     });
     glfwSetMouseButtonCallback(base, [](GLFWwindow *window, int button, int action, int mods) {
-        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        user_ptr->onMouseButtonCallback(button, action, mods);
+        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        base->onMouseButtonCallback(button, action, mods);
     });
     glfwSetScrollCallback(base, [](GLFWwindow *window, double xoffset, double yoffset) {
-        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        user_ptr->onScrollCallback({ xoffset, yoffset });
+        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        base->onScrollCallback({ xoffset, yoffset });
     });
     glfwSetDropCallback(base, [](GLFWwindow *window, int count, const char **paths) {
-        GlfwWindow *user_ptr = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
-        user_ptr->onDropCallback(count, paths);
+        GlfwWindow *base = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(window));
+        base->onDropCallback(count, paths);
     });
 }
 
