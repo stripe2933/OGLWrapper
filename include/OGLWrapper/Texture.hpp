@@ -11,7 +11,7 @@
 #include "strict_mode.hpp"
 
 namespace OGLWrapper{
-    struct TextureParamter {
+    struct TextureParameter {
         GLint wrap_s = GL_REPEAT;
         GLint wrap_t = GL_REPEAT;
         GLint wrap_r = GL_REPEAT;
@@ -39,7 +39,7 @@ namespace OGLWrapper{
 
         template <bool CheckFormat = OGLWRAPPER_STRICT_MODE>
         Texture(GLenum target, GLint internal_format, GLsizei width, GLsizei height, GLenum format, GLenum type,
-                const void *data, const TextureParamter &parameter, bool generate_mipmap = true) : target { target }
+                const void *data, const TextureParameter &parameter, bool generate_mipmap = true) : target { target }
         {
             if constexpr (CheckFormat) {
                 if (!isValidTarget(target)) {

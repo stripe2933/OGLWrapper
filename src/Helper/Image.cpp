@@ -9,7 +9,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-GLint Image::mapChannelToInternalFormat(int channels) {
+GLint OGLWrapper::Helper::Image::mapChannelToInternalFormat(int channels) {
     switch (channels) {
         case 2: return GL_RG;
         case 3: return GL_RGB;
@@ -18,7 +18,7 @@ GLint Image::mapChannelToInternalFormat(int channels) {
     }
 }
 
-GLenum Image::mapChannelToFormat(int channels) {
+GLenum OGLWrapper::Helper::Image::mapChannelToFormat(int channels) {
     switch (channels) {
         case 2: return GL_RG;
         case 3: return GL_RGB;
@@ -27,7 +27,7 @@ GLenum Image::mapChannelToFormat(int channels) {
     }
 }
 
-Image::Image(const char * source, bool flip) {
+OGLWrapper::Helper::Image::Image(const char * source, bool flip) {
     stbi_set_flip_vertically_on_load(flip);
     data = stbi_load(source, &width, &height, &channels, 0);
 
@@ -36,19 +36,19 @@ Image::Image(const char * source, bool flip) {
     }
 }
 
-Image::Image(Image&& source) noexcept
+OGLWrapper::Helper::Image::Image(Image&& source) noexcept
         : width { source.width }, height { source.height }, channels { source.channels }, data { source.data }
 {
     source.data = nullptr;
 }
 
-OGLWrapper::Texture Image::toTexture(const OGLWrapper::TextureParamter &parameter, bool generate_mipmap) const {
-    return OGLWrapper::Texture { GL_TEXTURE_2D, mapChannelToInternalFormat(channels), width, height,
-                             mapChannelToFormat(channels), GL_UNSIGNED_BYTE, data, parameter, generate_mipmap };
+OGLWrapper::Texture OGLWrapper::Helper::Image::toTexture(const TextureParameter &parameter, bool generate_mipmap) const {
+    return Texture { GL_TEXTURE_2D, mapChannelToInternalFormat(channels), width, height,
+                     mapChannelToFormat(channels), GL_UNSIGNED_BYTE, data, parameter, generate_mipmap };
 
 }
 
-Image::~Image() {
+OGLWrapper::Helper::Image::~Image() {
     if (data != nullptr) {
         stbi_image_free(data);
     }
