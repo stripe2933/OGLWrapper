@@ -59,7 +59,7 @@ OGLWrapper::Texture OGLWrapper::Helper::Image::toTexture(GLenum target, const Te
 }
 
 OGLWrapper::Texture OGLWrapper::Helper::Image::toCubemap(const Image& right, const Image& left, const Image& top,
-    const Image& bottom, const Image& back, const Image& front)
+    const Image& bottom, const Image& front, const Image& back)
 {
     Texture texture { GL_TEXTURE_CUBE_MAP };
 
@@ -84,7 +84,7 @@ OGLWrapper::Texture OGLWrapper::Helper::Image::toCubemap(const Image& right, con
             mapChannelToFormat(image.channels),
             GL_UNSIGNED_BYTE,
             image.data)), ...);
-    }(std::make_index_sequence<6>{}, right, left, top, bottom, back, front);
+    }(std::make_index_sequence<6>{}, right, left, top, bottom, front, back);
 
     return texture;
 }
