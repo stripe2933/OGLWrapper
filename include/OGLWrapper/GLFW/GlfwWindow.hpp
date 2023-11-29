@@ -35,7 +35,7 @@ protected:
     virtual void onDropCallback(int count, const char **paths) { }
 
 public:
-    GlfwWindow(int width, int height, const char *title, const GlfwWindowHint &hint = {});
+    GlfwWindow(int width, int height, const char *title, const GlfwWindowHint &hint);
 
     virtual ~GlfwWindow();
 

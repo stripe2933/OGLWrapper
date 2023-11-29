@@ -20,7 +20,7 @@ public:
     Image(const Image&) = delete;
     Image(Image&& source) noexcept;
 
-    OGLWrapper::Texture toTexture(const OGLWrapper::TextureParamter &parameter = {}, bool generate_mipmap = true);
+    OGLWrapper::Texture toTexture(const OGLWrapper::TextureParamter &parameter, bool generate_mipmap = true) const;
 
     ~Image();
 };

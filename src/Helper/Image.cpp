@@ -42,8 +42,8 @@ Image::Image(Image&& source) noexcept
     source.data = nullptr;
 }
 
-OGLWrapper::Texture Image::toTexture(const OGLWrapper::TextureParamter &parameter, bool generate_mipmap) {
-    return OGLWrapper::Texture { mapChannelToInternalFormat(channels), width, height,
+OGLWrapper::Texture Image::toTexture(const OGLWrapper::TextureParamter &parameter, bool generate_mipmap) const {
+    return OGLWrapper::Texture { GL_TEXTURE_2D, mapChannelToInternalFormat(channels), width, height,
                              mapChannelToFormat(channels), GL_UNSIGNED_BYTE, data, parameter, generate_mipmap };
 
 }
