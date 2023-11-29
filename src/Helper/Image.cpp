@@ -5,6 +5,8 @@
 #include <OGLWrapper/Helper/Image.hpp>
 
 #include <stdexcept>
+#include <initializer_list>
+#include <utility>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -42,10 +44,49 @@ OGLWrapper::Helper::Image::Image(Image&& source) noexcept
     source.data = nullptr;
 }
 
-OGLWrapper::Texture OGLWrapper::Helper::Image::toTexture(const TextureParameter &parameter, bool generate_mipmap) const {
-    return Texture { GL_TEXTURE_2D, mapChannelToInternalFormat(channels), width, height,
-                     mapChannelToFormat(channels), GL_UNSIGNED_BYTE, data, parameter, generate_mipmap };
+OGLWrapper::Texture OGLWrapper::Helper::Image::toTexture(GLenum target, const TextureParameter &parameter, bool generate_mipmap) const {
+    Texture texture { target };
 
+    glBindTexture(target, texture.handle);
+    parameter.setup(target);
+
+    glTexImage2D(target, 0, mapChannelToInternalFormat(channels), width, height, 0, mapChannelToFormat(channels), GL_UNSIGNED_BYTE, data);
+    if (generate_mipmap) {
+        glGenerateMipmap(target);
+    }
+
+    return texture;
+}
+
+OGLWrapper::Texture OGLWrapper::Helper::Image::toCubemap(const Image& right, const Image& left, const Image& top,
+    const Image& bottom, const Image& back, const Image& front)
+{
+    Texture texture { GL_TEXTURE_CUBE_MAP };
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP, texture.handle);
+    TextureParameter {
+        .wrap_s = GL_CLAMP_TO_EDGE,
+        .wrap_t = GL_CLAMP_TO_EDGE,
+        .wrap_r = GL_CLAMP_TO_EDGE,
+        .min_filter = GL_LINEAR,
+        .mag_filter = GL_LINEAR,
+    }.setup(GL_TEXTURE_CUBE_MAP);
+
+    []<typename... Images, std::size_t... Is>
+        requires (sizeof...(Images) == sizeof...(Is))
+    (std::index_sequence<Is...>, const Images &...image){
+        ((glTexImage2D(
+            GL_TEXTURE_CUBE_MAP_POSITIVE_X + Is,
+            0,
+            mapChannelToInternalFormat(image.channels),
+            image.width, image.height,
+            0,
+            mapChannelToFormat(image.channels),
+            GL_UNSIGNED_BYTE,
+            image.data)), ...);
+    }(std::make_index_sequence<6>{}, right, left, top, bottom, back, front);
+
+    return texture;
 }
 
 OGLWrapper::Helper::Image::~Image() {

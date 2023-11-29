@@ -22,27 +22,6 @@ bool OGLWrapper::Texture::isValidTarget(GLenum target) {
     );
 }
 
-bool OGLWrapper::Texture::isValidInternalFormat(GLint internal_format) {
-    // See https://registry.khronos.org/OpenGL-Refpages/gl4/html/glTexImage2D.xhtml
-    // TODO: add more formats.
-
-    return isOneOf(internal_format,
-        { GL_DEPTH_COMPONENT, GL_DEPTH_STENCIL, GL_RED, GL_RG, GL_RGB, GL_RGBA }
-    );
-}
-
-bool OGLWrapper::Texture::isValidFormat(GLenum format) {
-    return isOneOf(static_cast<GLint>(format),
-        { GL_RED, GL_RG, GL_RGB, GL_BGR, GL_RGBA, GL_BGRA }
-    );
-}
-
-bool OGLWrapper::Texture::isValidType(GLenum type) {
-    return isOneOf(static_cast<GLint>(type),
-        { GL_UNSIGNED_BYTE, GL_BYTE, GL_UNSIGNED_SHORT, GL_SHORT, GL_UNSIGNED_INT, GL_INT, GL_FLOAT }
-    );
-}
-
 OGLWrapper::Texture::Texture(Texture&& source) noexcept : target { source.target }, handle { source.handle } {
     source.handle = 0;
 }

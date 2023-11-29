@@ -21,7 +21,8 @@ namespace OGLWrapper::Helper {
         Image(const Image&) = delete;
         Image(Image&& source) noexcept;
 
-        Texture toTexture(const TextureParameter &parameter, bool generate_mipmap = true) const;
+        Texture toTexture(GLenum target, const TextureParameter &parameter, bool generate_mipmap = true) const;
+        static Texture toCubemap(const Image &right, const Image &left, const Image &top, const Image &bottom, const Image &back, const Image &front);
 
         ~Image();
     };
