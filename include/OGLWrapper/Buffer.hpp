@@ -8,6 +8,8 @@
 
 #include <GL/gl3w.h>
 
+#include "strict_mode.hpp"
+
 namespace OGLWrapper{
     enum class BufferBindingTarget : GLenum {
         ArrayBuffer = GL_ARRAY_BUFFER, // Vertex attributes
