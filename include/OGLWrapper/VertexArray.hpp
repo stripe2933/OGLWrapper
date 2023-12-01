@@ -21,5 +21,9 @@ namespace OGLWrapper{
         ~VertexArray() {
             glDeleteVertexArrays(1, &handle);
         }
+
+		void bind() const{
+			glBindVertexArray(handle);
+		};
     };
 }
