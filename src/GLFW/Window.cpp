@@ -107,6 +107,11 @@ glm::ivec2 OGLWrapper::GLFW::Window::getFramebufferSize() const {
     return size;
 }
 
+float OGLWrapper::GLFW::Window::getFramebufferAspectRatio() const {
+    glm::ivec2 framebuffer_size = getFramebufferSize();
+    return static_cast<float>(framebuffer_size.x) / static_cast<float>(framebuffer_size.y);
+}
+
 glm::vec2 OGLWrapper::GLFW::Window::getContentScale() const {
     glm::vec2 scale;
     glfwGetWindowContentScale(base, &scale.x, &scale.y);

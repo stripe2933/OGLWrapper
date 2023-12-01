@@ -25,6 +25,9 @@ namespace OGLWrapper::GLFW {
     protected:
         GLFWwindow *base;
 
+        virtual void onRenderLoop(float time_delta) = 0;
+
+    public:
         eventpp::CallbackList<void(EventArg&, glm::ivec2 /* size */), EventArg::policy> size_callback;
         eventpp::CallbackList<void(EventArg&, glm::ivec2 /* size */), EventArg::policy> framebuffer_size_callback;
         eventpp::CallbackList<void(EventArg&, glm::vec2 /* scale */), EventArg::policy> content_scale_callback;
@@ -36,14 +39,12 @@ namespace OGLWrapper::GLFW {
         eventpp::CallbackList<void(EventArg&, glm::dvec2 /* offset */), EventArg::policy> scroll_callback;
         eventpp::CallbackList<void(EventArg&, int /* count */, const char ** /* paths */), EventArg::policy> drop_callback;
 
-        virtual void onRenderLoop(float time_delta) = 0;
-
-    public:
         Window(int width, int height, const char *title, const WindowHint &hint);
         virtual ~Window();
 
         glm::ivec2 getSize() const;
         glm::ivec2 getFramebufferSize() const;
+        float getFramebufferAspectRatio() const;
         glm::vec2 getContentScale() const;
 
         glm::dvec2 getCursorPosition() const;
