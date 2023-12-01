@@ -85,6 +85,14 @@ namespace OGLWrapper{
             source.handle = 0;
         }
 
+        Buffer &operator=(const Buffer&) = delete;
+        Buffer &operator=(Buffer&& source) noexcept {
+            glDeleteBuffers(1, &handle);
+            handle = std::exchange(source.handle, 0);
+            capacity = source.capacity;
+            return *this;
+        }
+
 	    ~Buffer() {
             if (handle != 0) {
                 glDeleteBuffers(1, &handle);

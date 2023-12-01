@@ -27,5 +27,7 @@ namespace OGLWrapper{
      **/
     struct OpenGLContext{
         OpenGLContext();
+        OpenGLContext(const OpenGLContext&) = delete;
+        OpenGLContext(OpenGLContext&&) = delete;
     };
 }

@@ -58,6 +58,13 @@ namespace OGLWrapper {
             handle = 0;
         }
 
+        Shader &operator=(const Shader&) = delete;
+        Shader &operator=(Shader&& source) noexcept {
+            glDeleteShader(handle);
+            handle = std::exchange(source.handle, 0);
+            return *this;
+        }
+
         ~Shader() {
             if (handle != 0) {
                 glDeleteShader(handle);

@@ -18,6 +18,13 @@ namespace OGLWrapper{
             source.handle = 0;
         }
 
+        Renderbuffer &operator=(const Renderbuffer&) = delete;
+        Renderbuffer &operator=(Renderbuffer&& source) noexcept {
+            glDeleteRenderbuffers(1, &handle);
+            handle = std::exchange(source.handle, 0);
+            return *this;
+        }
+
         ~Renderbuffer() {
             if (handle != 0) {
                 glDeleteRenderbuffers(1, &handle);

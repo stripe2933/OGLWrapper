@@ -18,6 +18,13 @@ namespace OGLWrapper{
             source.handle = 0;
         }
 
+        VertexArray &operator=(const VertexArray&) = delete;
+        VertexArray &operator=(VertexArray&& source) noexcept {
+            glDeleteVertexArrays(1, &handle);
+            handle = std::exchange(source.handle, 0);
+            return *this;
+        }
+
         ~VertexArray() {
             glDeleteVertexArrays(1, &handle);
         }

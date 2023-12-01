@@ -39,6 +39,13 @@ namespace OGLWrapper{
             source.handle = 0;
         }
 
+        Texture &operator=(const Texture&) = delete;
+        Texture &operator=(Texture&& source) noexcept {
+            glDeleteTextures(1, &handle);
+            handle = std::exchange(source.handle, 0);
+            return *this;
+        }
+
         ~Texture() {
             if (handle != 0) {
                 glDeleteTextures(1, &handle);

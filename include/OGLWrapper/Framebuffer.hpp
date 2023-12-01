@@ -26,6 +26,13 @@ namespace OGLWrapper {
             source.handle = 0;
         }
 
+        Framebuffer &operator=(const Framebuffer&) = delete;
+        Framebuffer &operator=(Framebuffer&& source) noexcept {
+            glDeleteFramebuffers(1, &handle);
+            handle = std::exchange(source.handle, 0);
+            return *this;
+        }
+
         ~Framebuffer() {
             if (handle != 0) {
                 glDeleteFramebuffers(1, &handle);
