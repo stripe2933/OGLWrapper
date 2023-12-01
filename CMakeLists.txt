@@ -8,7 +8,6 @@ project(OGLWrapper
 add_library(OGLWrapper
     src/OpenGLContext.cpp
     src/Shader.cpp
-    src/Texture.cpp
     src/Program.cpp
     src/Helper/Image.cpp
     src/GLFW/Window.cpp
