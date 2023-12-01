@@ -48,12 +48,12 @@ namespace OGLWrapper {
                 checkLinkStatus();
             }
         }
-
         Program(const Program&) = delete; // Program could not be copied.
         Program(Program &&source) noexcept;
 
-        GLint getUniformLocation(const char *name) const;
-
         ~Program();
+
+        void use() const;
+        GLint getUniformLocation(const char *name) const;
     };
 }

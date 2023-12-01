@@ -47,3 +47,7 @@ OGLWrapper::Program::~Program() {
         glDeleteProgram(handle);
     }
 }
+
+void OGLWrapper::Program::use() const {
+    glUseProgram(handle);
+}
