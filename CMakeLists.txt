@@ -14,6 +14,10 @@ add_library(OGLWrapper
 )
 target_compile_features(OGLWrapper PUBLIC cxx_std_20)
 
+target_include_directories(OGLWrapper PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/extlibs
+)
+
 find_package(OpenGL REQUIRED)
 find_package(gl3w CONFIG REQUIRED)
 find_package(Stb REQUIRED)
