@@ -44,26 +44,12 @@ OGLWrapper::Helper::Image::Image(Image&& source) noexcept
     source.data = nullptr;
 }
 
-OGLWrapper::Texture OGLWrapper::Helper::Image::toTexture(GLenum target, const TextureParameter &parameter, bool generate_mipmap) const {
-    Texture texture { target };
-
-    glBindTexture(target, texture.handle);
-    parameter.setup(target);
-
-    glTexImage2D(target, 0, mapChannelToInternalFormat(channels), width, height, 0, mapChannelToFormat(channels), GL_UNSIGNED_BYTE, data);
-    if (generate_mipmap) {
-        glGenerateMipmap(target);
-    }
-
-    return texture;
-}
-
-OGLWrapper::Texture OGLWrapper::Helper::Image::toCubemap(const Image& right, const Image& left, const Image& top,
+OGLWrapper::Texture<GL_TEXTURE_CUBE_MAP> OGLWrapper::Helper::Image::toCubemap(const Image& right, const Image& left, const Image& top,
     const Image& bottom, const Image& front, const Image& back)
 {
-    Texture texture { GL_TEXTURE_CUBE_MAP };
+    OGLWrapper::Texture<GL_TEXTURE_CUBE_MAP> texture{};
+    texture.bind();
 
-    glBindTexture(GL_TEXTURE_CUBE_MAP, texture.handle);
     TextureParameter {
         .wrap_s = GL_CLAMP_TO_EDGE,
         .wrap_t = GL_CLAMP_TO_EDGE,

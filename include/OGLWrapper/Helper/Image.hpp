@@ -21,8 +21,22 @@ namespace OGLWrapper::Helper {
         Image(const Image&) = delete;
         Image(Image&& source) noexcept;
 
-        Texture toTexture(GLenum target, const TextureParameter &parameter, bool generate_mipmap = true) const;
-        static Texture toCubemap(const Image &right, const Image &left, const Image &top, const Image &bottom, const Image &back, const Image &front);
+        template <GLenum Target>
+        Texture<Target> toTexture(const TextureParameter &parameter, bool generate_mipmap = true) const {
+            Texture<Target> texture{};
+            texture.bind();
+
+            parameter.setup(Target);
+
+            glTexImage2D(Target, 0, mapChannelToInternalFormat(channels), width, height, 0, mapChannelToFormat(channels), GL_UNSIGNED_BYTE, data);
+            if (generate_mipmap) {
+                glGenerateMipmap(Target);
+            }
+
+            return texture;
+        }
+
+        static Texture<GL_TEXTURE_CUBE_MAP> toCubemap(const Image &right, const Image &left, const Image &top, const Image &bottom, const Image &back, const Image &front);
 
         ~Image();
     };

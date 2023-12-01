@@ -10,19 +10,14 @@
 #include <GL/gl3w.h>
 
 #include "strict_mode.hpp"
+#include "gl_constraints.hpp"
 
 namespace OGLWrapper {
     namespace details {
         std::string read_file(const std::filesystem::path &path);
     }
 
-    enum class ShaderType : GLenum {
-        Vertex = GL_VERTEX_SHADER,
-        Fragment = GL_FRAGMENT_SHADER,
-        Geometry = GL_GEOMETRY_SHADER,
-    };
-
-    template <ShaderType ShaderT>
+    template <GLenum ShaderType> requires (GLConstraints::isShaderType<ShaderType>())
     class Shader final {
         void checkCompileStatus() const {
             GLint success;
@@ -38,13 +33,13 @@ namespace OGLWrapper {
         }
 
     public:
-        static constexpr ShaderType shader_type = ShaderT;
+        static constexpr GLenum shader_type = ShaderType;
 
         GLuint handle;
 
         template <bool CheckCompileStatus = OGLWRAPPER_STRICT_MODE>
         explicit Shader(const std::filesystem::path &source_path)
-                : handle { glCreateShader(static_cast<GLenum>(ShaderT)) }
+                : handle { glCreateShader(ShaderType) }
         {
             const std::string shader_source = details::read_file(source_path);
             const char* const shader_source_c_str = shader_source.c_str();
@@ -70,7 +65,10 @@ namespace OGLWrapper {
         }
     };
 
-    using VertexShader = Shader<ShaderType::Vertex>;
-    using FragmentShader = Shader<ShaderType::Fragment>;
-    using GeometryShader = Shader<ShaderType::Geometry>;
+    using VertexShader = Shader<GL_VERTEX_SHADER>;
+    using FragmentShader = Shader<GL_FRAGMENT_SHADER>;
+    using GeometryShader = Shader<GL_GEOMETRY_SHADER>;
+    using TessControlShader = Shader<GL_TESS_CONTROL_SHADER>;
+    using TessEvaluationShader = Shader<GL_TESS_EVALUATION_SHADER>;
+    using ComputeShader = Shader<GL_COMPUTE_SHADER>;
 }

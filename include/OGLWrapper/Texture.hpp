@@ -4,11 +4,9 @@
 
 #pragma once
 
-#include <stdexcept>
-
 #include <GL/gl3w.h>
 
-#include "strict_mode.hpp"
+#include "gl_constraints.hpp"
 
 namespace OGLWrapper{
     struct TextureParameter {
@@ -27,26 +25,28 @@ namespace OGLWrapper{
         }
     };
 
-    class Texture {
-        static bool isValidTarget(GLenum target);
+    template <GLenum Target> requires (GLConstraints::isTextureTarget<Target>())
+    struct Texture {
+        static constexpr GLenum target = Target;
 
-    public:
-        GLenum target;
         GLuint handle;
 
-        template <bool CheckTarget = OGLWRAPPER_STRICT_MODE>
-        explicit Texture(GLenum target) : target { target } {
-            if constexpr (CheckTarget) {
-                if (!isValidTarget(target)) {
-                    throw std::invalid_argument { "Invalid target" };
-                }
-            }
-
+        explicit Texture() {
             glGenTextures(1, &handle);
         }
         Texture(const Texture&) = delete;
-        Texture(Texture&& source) noexcept;
+        Texture(Texture&& source) noexcept : handle { source.handle } {
+            source.handle = 0;
+        }
 
-        ~Texture();
+        ~Texture() {
+            if (handle != 0) {
+                glDeleteTextures(1, &handle);
+            }
+        }
+
+        void bind() const {
+            glBindTexture(Target, handle);
+        }
     };
 }
