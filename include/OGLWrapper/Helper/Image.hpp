@@ -22,13 +22,15 @@ namespace OGLWrapper::Helper {
         Image(Image&& source) noexcept;
 
         template <GLenum Target>
-        Texture<Target> toTexture(const TextureParameter &parameter, bool generate_mipmap = true) const {
+        Texture<Target> toTexture(bool generate_mipmap = true) const {
             Texture<Target> texture{};
             texture.bind();
 
-            parameter.setup(Target);
-
             glTexImage2D(Target, 0, mapChannelToInternalFormat(channels), width, height, 0, mapChannelToFormat(channels), GL_UNSIGNED_BYTE, data);
+            glTexParameteri(Target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(Target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(Target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(Target, GL_TEXTURE_WRAP_T, GL_REPEAT);
             if (generate_mipmap) {
                 glGenerateMipmap(Target);
             }

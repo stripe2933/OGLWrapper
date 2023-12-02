@@ -50,13 +50,11 @@ OGLWrapper::Texture<GL_TEXTURE_CUBE_MAP> OGLWrapper::Helper::Image::toCubemap(co
     OGLWrapper::Texture<GL_TEXTURE_CUBE_MAP> texture{};
     texture.bind();
 
-    TextureParameter {
-        .wrap_s = GL_CLAMP_TO_EDGE,
-        .wrap_t = GL_CLAMP_TO_EDGE,
-        .wrap_r = GL_CLAMP_TO_EDGE,
-        .min_filter = GL_LINEAR,
-        .mag_filter = GL_LINEAR,
-    }.setup(GL_TEXTURE_CUBE_MAP);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     []<typename... Images, std::size_t... Is>
         requires (sizeof...(Images) == sizeof...(Is))
