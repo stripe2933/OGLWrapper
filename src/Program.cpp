@@ -42,6 +42,10 @@ GLint OGLWrapper::Program::getUniformLocation(const char* name) const {
     return location;
 }
 
+void OGLWrapper::Program::pendUniforms(std::function<void()> command) const {
+    pending_uniform_commands.emplace(std::move(command));
+}
+
 OGLWrapper::Program::~Program() {
     if (handle != 0) {
         glDeleteProgram(handle);
@@ -50,4 +54,9 @@ OGLWrapper::Program::~Program() {
 
 void OGLWrapper::Program::use() const {
     glUseProgram(handle);
+
+    while (!pending_uniform_commands.empty()) {
+        pending_uniform_commands.front()();
+        pending_uniform_commands.pop();
+    }
 }

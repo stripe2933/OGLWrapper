@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <queue>
+#include <functional>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -27,6 +29,7 @@ namespace OGLWrapper {
 
     class Program final {
         mutable std::unordered_map<std::string, GLint, details::string_hasher, std::equal_to<>> uniform_locations;
+        mutable std::queue<std::function<void()>> pending_uniform_commands;
 
         void checkLinkStatus() const;
 
@@ -58,5 +61,6 @@ namespace OGLWrapper {
 
         void use() const;
         GLint getUniformLocation(const char *name) const;
+        void pendUniforms(std::function<void()> command) const;
     };
 }
