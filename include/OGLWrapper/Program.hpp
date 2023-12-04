@@ -62,5 +62,14 @@ namespace OGLWrapper {
         void use() const;
         GLint getUniformLocation(const char *name) const;
         void pendUniforms(std::function<void()> command) const;
+        void setUniformBlockBinding(const char *name, GLuint binding_point) const;
+
+        template <typename... Programs>
+        static void setUniformBlockBindings(const char *name, GLuint binding_point, Programs &...programs);
     };
+
+    template <typename... Programs>
+    void Program::setUniformBlockBindings(const char* name, GLuint binding_point, Programs&... programs) {
+        (programs.setUniformBlockBinding(name, binding_point), ...);
+    }
 }

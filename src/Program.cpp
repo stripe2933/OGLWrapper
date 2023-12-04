@@ -46,6 +46,11 @@ void OGLWrapper::Program::pendUniforms(std::function<void()> command) const {
     pending_uniform_commands.emplace(std::move(command));
 }
 
+void OGLWrapper::Program::setUniformBlockBinding(const char* name, GLuint binding_point) const {
+    const GLuint index = glGetUniformBlockIndex(handle, name);
+    glUniformBlockBinding(handle, index, binding_point);
+}
+
 OGLWrapper::Program::~Program() {
     if (handle != 0) {
         glDeleteProgram(handle);
