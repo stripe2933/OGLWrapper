@@ -80,6 +80,7 @@ namespace OGLWrapper{
         }
         Buffer(const Buffer&) = delete;
         Buffer(Buffer&& source) noexcept : BufferBase<BufferTarget, T> { source.usage },
+										   handle { source.handle },
                                            capacity { source.capacity }
         {
             source.handle = 0;
