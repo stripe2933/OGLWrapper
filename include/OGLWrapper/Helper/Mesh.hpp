@@ -26,9 +26,16 @@ namespace OGLWrapper::Helper{
         OGLWrapper::VertexArray vertex_arrray;
         OGLWrapper::Buffer<GL_ARRAY_BUFFER, VertexT> vertex_buffer;
 
-        void draw() const {
+		template <bool CheckDrawMode = OGLWRAPPER_STRICT_MODE>
+        void draw(GLenum mode) const {
+			if constexpr (CheckDrawMode) {
+				if (!GLConstraints::isDrawMode(mode)) {
+                    throw std::invalid_argument { "Invalid draw mode." };
+                }
+			}
+
             vertex_arrray.bind();
-            glDrawArrays(GL_TRIANGLES, 0, vertex_buffer.capacity);
+            glDrawArrays(mode, 0, vertex_buffer.capacity);
         }
     };
 
@@ -64,9 +71,16 @@ namespace OGLWrapper::Helper{
         OGLWrapper::Buffer<GL_ARRAY_BUFFER, VertexT> vertex_buffer;
         OGLWrapper::Buffer<GL_ELEMENT_ARRAY_BUFFER, IndexT> index_buffer;
 
-        void draw() const {
+		template <bool CheckDrawMode = OGLWRAPPER_STRICT_MODE>
+        void draw(GLenum mode) const {
+			if constexpr (CheckDrawMode) {
+				if (!GLConstraints::isDrawMode(mode)) {
+                    throw std::invalid_argument { "Invalid draw mode." };
+                }
+			}
+
             vertex_arrray.bind();
-            glDrawElements(GL_TRIANGLES, index_buffer.capacity, index_type_mapper.get<IndexT>(), nullptr);
+            glDrawElements(mode, index_buffer.capacity, index_type_mapper.get<IndexT>(), nullptr);
         }
     };
 
