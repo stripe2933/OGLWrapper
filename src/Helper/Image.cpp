@@ -13,6 +13,7 @@
 
 GLint OGLWrapper::Helper::Image::mapChannelToInternalFormat(int channels) {
     switch (channels) {
+        case 1: return GL_RED;
         case 2: return GL_RG;
         case 3: return GL_RGB;
         case 4: return GL_RGBA;
@@ -22,6 +23,7 @@ GLint OGLWrapper::Helper::Image::mapChannelToInternalFormat(int channels) {
 
 GLenum OGLWrapper::Helper::Image::mapChannelToFormat(int channels) {
     switch (channels) {
+        case 1: return GL_RED;
         case 2: return GL_RG;
         case 3: return GL_RGB;
         case 4: return GL_RGBA;
