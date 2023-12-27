@@ -8,6 +8,7 @@
 #include <functional>
 #include <string>
 #include <string_view>
+#include <span>
 #include <unordered_map>
 
 #include <GL/gl3w.h>
@@ -31,7 +32,14 @@ namespace OGLWrapper {
         mutable std::unordered_map<std::string, GLint, details::string_hasher, std::equal_to<>> uniform_locations;
         mutable std::queue<std::function<void()>> pending_uniform_commands;
 
-        void checkLinkStatus() const;
+        static void checkLinkStatus(GLuint handle);
+
+        // This constructor is only for ProgramBuilder.
+        explicit Program(GLuint handle) : handle { handle } {
+
+        }
+
+        friend struct ProgramBuilder;
 
     public:
         GLuint handle;
@@ -43,19 +51,14 @@ namespace OGLWrapper {
             glLinkProgram(handle);
 
             if constexpr (CheckLinkStatus) {
-                checkLinkStatus();
+                checkLinkStatus(handle);
             }
         }
         Program(const Program&) = delete; // Program could not be copied.
         Program(Program &&source) noexcept;
 
         Program &operator=(const Program&) = delete;
-        Program &operator=(Program&& source) noexcept {
-            glDeleteProgram(handle);
-            handle = std::exchange(source.handle, 0);
-            uniform_locations = std::move(source.uniform_locations);
-            return *this;
-        }
+        Program &operator=(Program&& source) noexcept;
 
         ~Program();
 
@@ -72,4 +75,40 @@ namespace OGLWrapper {
     void Program::setUniformBlockBindings(const char* name, GLuint binding_point, Programs&... programs) {
         (programs.setUniformBlockBinding(name, binding_point), ...);
     }
+
+    /**
+     * \brief Construct program with builder pattern.
+     * \code
+     * OGLWrapper::Program program =
+     *     OGLWrapper::ProgramBuilder{}
+     *     .attachShader(OGLWrapper::VertexShader { "vert.vert" })
+     *     .attachShader(OGLWrapper::FragmentShader { "frag.frag" })
+     *     .setFeedbackVaryings({ "outValue" }, GL_INTERLEAVED_ATTRIBS) // if needed
+     *     .build(); // equivalent to glLinkProgram.
+     * \endcode
+     */
+    struct ProgramBuilder {
+        GLuint program;
+
+        ProgramBuilder();
+        ~ProgramBuilder();
+
+        template <typename ShaderT>
+        ProgramBuilder &attachShader(ShaderT &&shader) {
+            glAttachShader(program, shader.handle);
+            return *this;
+        }
+
+        ProgramBuilder &setFeedbackVaryings(std::span<const char* const> varyings, GLenum buffer_mode);
+
+        template <bool CheckStatus = OGLWRAPPER_STRICT_MODE>
+        Program build() {
+            glLinkProgram(program);
+            if constexpr (CheckStatus) {
+                Program::checkLinkStatus(program);
+            }
+
+            return Program { std::exchange(program, 0) };
+        }
+    };
 }

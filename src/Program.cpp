@@ -6,7 +6,7 @@
 
 #include <stdexcept>
 
-void OGLWrapper::Program::checkLinkStatus() const {
+void OGLWrapper::Program::checkLinkStatus(GLuint handle) {
     GLint success;
     glGetProgramiv(handle, GL_LINK_STATUS, &success);
 
@@ -49,6 +49,30 @@ void OGLWrapper::Program::pendUniforms(std::function<void()> command) const {
 void OGLWrapper::Program::setUniformBlockBinding(const char* name, GLuint binding_point) const {
     const GLuint index = glGetUniformBlockIndex(handle, name);
     glUniformBlockBinding(handle, index, binding_point);
+}
+
+OGLWrapper::ProgramBuilder::ProgramBuilder() {
+    program = glCreateProgram();
+}
+
+OGLWrapper::ProgramBuilder::~ProgramBuilder() {
+    if (program != 0) {
+        glDeleteProgram(program);
+    }
+}
+
+OGLWrapper::ProgramBuilder& OGLWrapper::ProgramBuilder::setFeedbackVaryings(std::span<const char* const> varyings,
+    GLenum buffer_mode) {
+    // TODO: check if buffer mode is valid.
+    glTransformFeedbackVaryings(program, varyings.size(), varyings.data(), buffer_mode);
+    return *this;
+}
+
+OGLWrapper::Program& OGLWrapper::Program::operator=(Program&& source) noexcept {
+    glDeleteProgram(handle);
+    handle = std::exchange(source.handle, 0);
+    uniform_locations = std::move(source.uniform_locations);
+    return *this;
 }
 
 OGLWrapper::Program::~Program() {
